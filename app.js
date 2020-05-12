@@ -1,21 +1,25 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-
+require('dotenv').config();
 const app = express();
 
 
 app.use(bodyParser.json());
 
-mongoose.connect("mongodb://localhost:27017/userapiDB", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex: true });
 
 const userSchema = {
     username: {
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
     email: String,
-    password: String
+    password: {
+        type: String,
+        required: true
+    }
 };
 const User = mongoose.model("User", userSchema);
 
